@@ -1,4 +1,4 @@
-personnage : ?¿
+personnage : ? ou ¿
 plateforme : ┌──┐
              │  │
              └──┘
@@ -8,11 +8,15 @@ sol :        ╔══╗
 pics : ▲ ► ▼ ◄
 ennemis : Ω
 fin/porte :  
-            /▀\
-            ▌ ▐
-            \▄/
+            █▀▀█
+            ▌  ▐
 
-clé : 0=g
+            ou
+
+            ▌  ▐
+            █▄▄█
+
+clé : 🔑
 
 
 
@@ -65,212 +69,3 @@ prototype 2 :
            │  │
            │  │
 ────────────────▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-
-
-
-
-
-
-
-j'ai ce code ``def convert(lst):
-    a = 0
-    b = 0
-    l = [[]]
-    bl = {}
-    for i in lst:
-        if i == '┌':
-            l[a].append(Case(b, a, Etat.PLEINHAUTGAUCHE))
-        elif i == '─':
-            l[a].append(Case(b, a, Etat.PLEINHORIZONTAL))
-        elif i == '┐':
-            l[a].append(Case(b, a, Etat.PLEINHAUTDROITE))
-        elif i == '│':
-            l[a].append(Case(b, a, Etat.PLEINVERTICAL))
-        elif i == '└':
-            l[a].append(Case(b, a, Etat.PLEINBASGAUCHE))
-        elif i == '┘':
-            l[a].append(Case(b, a, Etat.PLEINBASDROITE))
-        elif i == 2:
-            l[a].append(Case(b, a, Etat.PLEINHORIZONTAL))
-        elif i == "╔":
-            l[a].append(Case(b, a, Etat.PARTIELHAUTGAUCHE))
-        elif i == "═":
-            l[a].append(Case(b, a, Etat.PARTIELHORIZONTAL))
-        elif i == "╗":
-            l[a].append(Case(b, a, Etat.PARTIELHAUTDROITE))
-        elif i == "║":
-            l[a].append(Case(b, a, Etat.PARTIELVERTICAL))
-        elif i == "╚":
-            l[a].append(Case(b, a, Etat.PARTIELBASGAUCHE))
-        elif i == "╝":
-            l[a].append(Case(b, a, Etat.PARTIELBASDROITE))
-        elif i == 3:
-            l[a].append(Case(b, a, Etat.PARTIELHORIZONTAL))
-        elif i == "?" or i == "¿" or i == 1:
-            l[a].append(Case(b, a, Etat.PERSONNAGE))
-        elif i == "▲":
-            l[a].append(Case(b, a, Etat.PICHAUT))
-        elif i == "▼":
-            l[a].append(Case(b, a, Etat.PICBAS))
-        elif i == "◄":
-            l[a].append(Case(b, a, Etat.PICGAUCHE))
-        elif i == "►":
-            l[a].append(Case(b, a, Etat.PICDROITE))
-        elif i == 7:
-            l[a].append(Case(b, a, Etat.PICHAUT))
-        elif i == "/":
-            l[a].append(Case(b, a, Etat.PORTENESW))
-        elif i == "▀":
-            l[a].append(Case(b, a, Etat.PORTEHAUT))
-        elif i == "\\":
-            l[a].append(Case(b, a, Etat.PORTENWSE))
-        elif i == "▌":
-            l[a].append(Case(b, a, Etat.PORTEGAUCHE))
-        elif i == "▄":
-            l[a].append(Case(b, a, Etat.PORTEBHAS))
-        elif i == 5:
-            l[a].append(Case(b, a, Etat.PORTENESW))
-        elif i == "0=g" or i == 6:
-            l[a].append(Case(b, a, Etat.CLEF))
-        elif i == "Ω" or i == 4:
-            l[a].append(Case(b, a, Etat.ENNEMI))
-        elif i == " " or i == 0:
-            l[a].append(Case(b, a, Etat.VIDE))
-        elif i == "\n":
-            l.append([])
-            bl.update({a: b})
-            b = 0
-            a += 1
-        b += 1
-    return l``, peux tu me créer un code qui fait l'inverse?
-l'objectif est d'obtenir un truc comme ça "
-┌────────────────────────────────────────────────────────────────────────────────────
-│
-│
-│
-│
-│
-│
-│
-│
-│
-│
-│                                   ╔══════╗
-│                                   ╚══════╝
-│
-│
-│      ?
-└─────────────────────────────────┐          ┌───────────────────────────────────────
-                                  │▲▲▲▲▲▲▲▲▲▲│
-                                  └──────────┘
-" et mes classes ressemble à ça "class Etat:
-    VIDE=0
-    PERSONNAGE=1
-    PLEINHAUTGAUCHE=20
-    PLEINHORIZONTAL=21
-    PLEINHAUTDROITE = 22
-    PLEINVERTICAL=23
-    PLEINBASGAUCHE = 24
-    PLEINBASDROITE = 25
-    PARTIELHAUTGAUCHE = 30
-    PARTIELHORIZONTAL = 31
-    PARTIELHAUTDROITE = 32
-    PARTIELVERTICAL = 33
-    PARTIELBASGAUCHE = 34
-    PARTIELBASDROITE = 35
-    ENNEMI=4
-    PORTENESW=50
-    PORTEHAUT=51
-    PORTENWSE=52
-    PORTEGAUCHE=53
-    PORTEDROITE=54
-    PORTEBHAS=55
-    CLEF=6
-    PICHAUT = 70
-    PICBAS = 71
-    PICGAUCHE = 72
-    PICDROITE = 73
-
-
-
-
-class Case:
-    def __init__(self,x:int,y:int,state:Etat):
-        self.x=x
-        self.y=y
-        self.etat=state"
-
-j'ai demandé à une autre ia et elle m'a donné ce code qui est outdated ``def convert_to_string(labyrinthe):
-    """
-    Convertit une liste de listes de Cases en une chaîne de caractères représentant le labyrinthe.
-    """
-    result = ""
-    for ligne in labyrinthe:
-        for case in ligne:
-            if case.etat == Etat.PLEIN:
-                if case.x == 0 and case.y == 0:
-                    result += "┌"
-                elif case.x == len(ligne) - 1 and case.y == 0:
-                    result += "┐"
-                elif case.x == 0 and case.y == len(labyrinthe) - 1:
-                    result += "└"
-                elif case.x == len(ligne) - 1 and case.y == len(labyrinthe) - 1:
-                    result += "┘"
-                elif case.y == 0:
-                    result += "─"
-                elif case.y == len(labyrinthe) - 1:
-                    result += "─"
-                elif case.x == 0 or case.x == len(ligne) - 1:
-                    result += "│"
-                else:
-                    result += "│" #cas par défaut
-            elif case.etat == Etat.PARTIEL:
-                if case.x == 0 and case.y == 0:
-                    result += "╔"
-                elif case.x == len(ligne) - 1 and case.y == 0:
-                    result += "╗"
-                elif case.x == 0 and case.y == len(labyrinthe) - 1:
-                    result += "╚"
-                elif case.x == len(ligne) - 1 and case.y == len(labyrinthe) - 1:
-                    result += "╝"
-                elif case.y == 0 or case.y == len(labyrinthe) - 1:
-                    result += "═"
-                elif case.x == 0 or case.x == len(ligne) - 1:
-                    result += "║"
-                else:
-                    result += "║" #cas par défaut
-            elif case.etat == Etat.PERSONNAGE:
-                result += "?"
-            elif case.etat == Etat.PIC:
-                result += "▲"
-            elif case.etat == Etat.PORTE:
-                result += "/"
-            elif case.etat == Etat.CLEF:
-                result += "g"
-            elif case.etat == Etat.ENNEMI:
-                result += "Ω"
-            elif case.etat == Etat.VIDE:
-                result += " "
-        result += "\n"
-    return result`` qui nous donne ça : "┌────────────────────────────────────────────────────────────────────────────────────
-│
-│
-│
-│
-│
-│
-│
-│
-│
-│
-│                                   ║║║║║║║║
-│                                   ║║║║║║║║
-│
-│
-│      ?
-│││││││││││││││││││││││││││││││││││          ││││││││││││││││││││││││││││││││││││││││
-                                  │▲▲▲▲▲▲▲▲▲▲│
-                                  ────────────                                       "
-
-
-

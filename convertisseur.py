@@ -1,8 +1,5 @@
 from decor import Case,Etat
-def open_txt(text):
-    txt = open(text, 'r')
-    return txt
-obj=open_txt("test.txt").read()
+
 
 def min_len(l):
     b=0
@@ -60,17 +57,17 @@ def convert(lst):
             l[a].append(Case(b, a, Etat.PICGAUCHE))
         elif i == "►":
             l[a].append(Case(b, a, Etat.PICDROITE))
-        elif i == "/":
-            l[a].append(Case(b, a, Etat.PORTENESW))
+        elif i == "█":
+            l[a].append(Case(b, a, Etat.PORTECOIN))
         elif i == "▀":
             l[a].append(Case(b, a, Etat.PORTEHAUT))
-        elif i == "\\":
-            l[a].append(Case(b, a, Etat.PORTENWSE))
         elif i == "▌":
             l[a].append(Case(b, a, Etat.PORTEGAUCHE))
+        elif i == "▐":
+            l[a].append(Case(b, a, Etat.PORTEDROITE))
         elif i == "▄":
             l[a].append(Case(b, a, Etat.PORTEBHAS))
-        elif i == "0=g":
+        elif i == "🔑":
             l[a].append(Case(b, a, Etat.CLEF))
         elif i == "Ω":
             l[a].append(Case(b, a, Etat.ENNEMI))
@@ -82,24 +79,20 @@ def convert(lst):
             b = 0
             a += 1
         b += 1
-    mxl = max(bl.values())
+    return l
+
+def uniformise(l):
+    mxl = 86
     mnl = min_len(l)
     while mxl != len(l[mnl]):
         mnl = min_len(l)
-        l[mnl].append(Case(b, a, Etat.VIDE))
-    return l
+        l[mnl].append(Case(len(l[mnl]), mnl, Etat.VIDE))
 
 
 
 
 
 
-
-
-
-lk=convert(obj)
-"""for i in range(len(lk)):
-    print(lk[i])"""
 
 
 def inverse_convert(grille):
@@ -121,12 +114,12 @@ def inverse_convert(grille):
         Etat.PARTIELBASGAUCHE: "╚",
         Etat.PARTIELBASDROITE: "╝",
         Etat.ENNEMI: "Ω",
-        Etat.PORTENESW: "/",
+        Etat.PORTECOIN: "█",
         Etat.PORTEHAUT: "▀",
-        Etat.PORTENWSE: "\\",  # Note : double antislash pour obtenir un backslash dans la chaîne
         Etat.PORTEGAUCHE: "▌",
+        Etat.PORTEDROITE: "▐",
         Etat.PORTEBHAS: "▄",
-        Etat.CLEF: "0=g",
+        Etat.CLEF: "🔑",
         Etat.PICHAUT: "▲",
         Etat.PICBAS: "▼",
         Etat.PICGAUCHE: "◄",
@@ -144,8 +137,5 @@ def inverse_convert(grille):
 
     # On retourne le résultat sous forme d'une chaîne multiligne
     return "\n".join(lignes)
-
-
-print(inverse_convert(lk))
 
 

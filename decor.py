@@ -1,14 +1,25 @@
-#fonction de lecture de csv
-import csv
-f=open("niveau.csv")
-niveau=list(csv.reader(f))
-f.close()
-
-
+import convertisseur
+from convertisseur import *
 
 class Grille:
-    def __init__(self,niveau):
-        pass
+    def __init__(self):
+        self.grille=[]
+    def remplir(self,niveau:int,tableau:int):
+        def open_txt(text):
+            txt = open(text, 'r')
+            return txt
+        obj = open_txt(f"niveau-{niveau}.txt").read()
+        self.grille = convertisseur.convert(obj)
+        for i in range (len(self.grille)):
+            self.grille[i]=self.grille[i][86*(tableau-1):86*tableau]
+        convertisseur.uniformise(self.grille)
+    def __str__(self):
+        ban = convertisseur.inverse_convert(self.grille)
+        return ban
+
+
+
+
 class Etat:
     VIDE=0
     PERSONNAGENORMAL=10
@@ -26,12 +37,11 @@ class Etat:
     PARTIELBASGAUCHE = 34
     PARTIELBASDROITE = 35
     ENNEMI=4
-    PORTENESW=50
+    PORTECOIN=50
     PORTEHAUT=51
-    PORTENWSE=52
-    PORTEGAUCHE=53
-    PORTEDROITE=54
-    PORTEBHAS=55
+    PORTEGAUCHE=52
+    PORTEDROITE=53
+    PORTEBHAS=54
     CLEF=6
     PICHAUT = 70
     PICBAS = 71
@@ -47,3 +57,7 @@ class Case:
         self.y=y
         self.etat=state
 
+if __name__ == '__main__':
+    A=Grille()
+    A.remplir(0,3)
+    print(A)
