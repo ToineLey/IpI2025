@@ -1,11 +1,11 @@
 class Etat:
-    VIDE=0
-    PERSONNAGENORMAL=10
-    PERSONNAGEINVERSE=11
-    PLEINHAUTGAUCHE=20
-    PLEINHORIZONTAL=21
+    VIDE = 0
+    PERSONNAGENORMAL = 10
+    PERSONNAGEINVERSE = 11
+    PLEINHAUTGAUCHE = 20
+    PLEINHORIZONTAL = 21
     PLEINHAUTDROITE = 22
-    PLEINVERTICAL=23
+    PLEINVERTICAL = 23
     PLEINBASGAUCHE = 24
     PLEINBASDROITE = 25
     PARTIELHAUTGAUCHE = 30
@@ -14,23 +14,21 @@ class Etat:
     PARTIELVERTICAL = 33
     PARTIELBASGAUCHE = 34
     PARTIELBASDROITE = 35
-    ENNEMI=4
-    PORTECOIN=50
-    PORTEHAUT=51
-    PORTEGAUCHE=52
-    PORTEDROITE=53
-    PORTEBHAS=54
-    CLEF=6
+    ENNEMI = 4
+    PORTECOIN = 50
+    PORTEHAUT = 51
+    PORTEGAUCHE = 52
+    PORTEDROITE = 53
+    PORTEBHAS = 54
+    CLEF = 6
     PICHAUT = 70
     PICBAS = 71
     PICGAUCHE = 72
     PICDROITE = 73
 
 
-
-
 class Case:
-    def __init__(self,x:int,y:int,state:Etat):
-        self.x=x
-        self.y=y
-        self.etat=state
+    def __init__(self, x: int, y: int, state: Etat):
+        self.x = x
+        self.y = y
+        self.etat = state

@@ -1,18 +1,16 @@
-from case import Case,Etat
+from case import Case, Etat
 
 
 def min_len(l):
-    b=0
-    c=0
-    t=999
+    b = 0
+    c = 0
+    t = 999
     for sub in l:
-        if len(sub)<t:
-            t=len(sub)
-            c=b
-        b+=1
+        if len(sub) < t:
+            t = len(sub)
+            c = b
+        b += 1
     return c
-
-
 
 
 def convert(lst):
@@ -81,18 +79,13 @@ def convert(lst):
         b += 1
     return l
 
+
 def uniformise(l):
     mxl = 86
     mnl = min_len(l)
     while mxl != len(l[mnl]):
         mnl = min_len(l)
         l[mnl].append(Case(len(l[mnl]), mnl, Etat.VIDE))
-
-
-
-
-
-
 
 
 def inverse_convert(grille):
@@ -137,5 +130,3 @@ def inverse_convert(grille):
 
     # On retourne le résultat sous forme d'une chaîne multiligne
     return "\n".join(lignes)
-
-
