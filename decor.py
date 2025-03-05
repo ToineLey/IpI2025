@@ -1,5 +1,6 @@
 import convertisseur
 from convertisseur import *
+from case import *
 
 class Grille:
     def __init__(self):
@@ -20,44 +21,13 @@ class Grille:
 
 
 
-class Etat:
-    VIDE=0
-    PERSONNAGENORMAL=10
-    PERSONNAGEINVERSE=11
-    PLEINHAUTGAUCHE=20
-    PLEINHORIZONTAL=21
-    PLEINHAUTDROITE = 22
-    PLEINVERTICAL=23
-    PLEINBASGAUCHE = 24
-    PLEINBASDROITE = 25
-    PARTIELHAUTGAUCHE = 30
-    PARTIELHORIZONTAL = 31
-    PARTIELHAUTDROITE = 32
-    PARTIELVERTICAL = 33
-    PARTIELBASGAUCHE = 34
-    PARTIELBASDROITE = 35
-    ENNEMI=4
-    PORTECOIN=50
-    PORTEHAUT=51
-    PORTEGAUCHE=52
-    PORTEDROITE=53
-    PORTEBHAS=54
-    CLEF=6
-    PICHAUT = 70
-    PICBAS = 71
-    PICGAUCHE = 72
-    PICDROITE = 73
 
-
-
-
-class Case:
-    def __init__(self,x:int,y:int,state:Etat):
-        self.x=x
-        self.y=y
-        self.etat=state
 
 if __name__ == '__main__':
     A=Grille()
-    A.remplir(0,3)
+    A.remplir(0,1)
     print(A)
+    for i in range(len(A.grille)):
+        for case in A.grille[i]:
+            if case.etat==Etat.PERSONNAGENORMAL or case.etat==Etat.PERSONNAGEINVERSE:
+                print(case.x,case.y)

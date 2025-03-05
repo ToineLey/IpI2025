@@ -1,4 +1,4 @@
-from decor import Case,Etat
+from case import Case,Etat
 
 
 def min_len(l):
