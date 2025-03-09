@@ -1,6 +1,10 @@
 from case import Case, Etat
 
 
+def open_txt(text):
+    txt = open(text, 'r')
+    return txt
+
 def min_len(l):
     b = 0
     c = 0
@@ -125,8 +129,17 @@ def inverse_convert(grille):
         for case in ligne:
             # Récupère le caractère correspondant à l'état de la case
             # Par défaut, on affiche " ?" si l'état n'est pas trouvé
-            ligne_str += mapping.get(case.etat, "?")
+            ligne_str += mapping.get(case.etat, "#")
         lignes.append(ligne_str)
 
     # On retourne le résultat sous forme d'une chaîne multiligne
     return "\n".join(lignes)
+
+def recreer(txt:str):
+    text = txt+".txt"
+    open_txt(text)
+    text = open_txt(text).read()
+    return text
+
+if __name__ == "__main__":
+    print(recreer("mort"))

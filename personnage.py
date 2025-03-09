@@ -7,50 +7,71 @@ class Personnage:
         self.direction = 0
         self.clef = False
         self.grille = grille
-
-        for i in range(len(self.grille.grille)):
-            for case in self.grille.grille[i]:
-                if case.etat == Etat.PERSONNAGENORMAL or case.etat == Etat.PERSONNAGEINVERSE:
-                    print(case.x, case.y)
         self.x = 8
         self.y = 15
+        self.mort = False
+        self.pic = (70,71,72,73)
 
     def gauche(self):
-        if self.direction == 1:
-            self.direction -= 2
-        else:
-            self.direction -= 1
+        self.direction = -1
 
     def droite(self):
-        if self.direction == -1:
-            self.direction += 2
-        else:
-            self.direction += 1
+        self.direction = 1
 
     def mouvement(self):
-        if self.direction == 1:
-            self.grille.grille[self.y][self.x].x, self.grille.grille[self.y][self.x + 1].x = self.grille.grille[self.y][
-                self.x + 1].x, self.grille.grille[self.y][self.x].x
-        elif self.direction == -1:
-            self.grille.grille[self.y][self.x].x, self.grille.grille[self.y][self.x - 1].x = self.grille.grille[self.y][
-                self.x - 1].x, self.grille.grille[self.y][self.x].x
-        if self.traction:
-            if self.grille.grille[self.y - 1][self.x].etat == Etat.VIDE:
-                self.y -= 1
-        if not self.traction:
-            if self.grille.grille[self.y + 1][self.x].etat == Etat.VIDE:
-                self.y += 1
+        if not self.mort:
+            if self.direction == 1:
+                if self.grille.grille[self.y][self.x + 1].etat == Etat.VIDE:
+                    if self.grille.grille[self.y][self.x+1].etat in self.pic:
+                        self.mort = True
+                    if self.traction:
+                        self.grille.grille[self.y][self.x].etat, self.grille.grille[self.y][
+                            self.x + 1].etat = Etat.VIDE, Etat.PERSONNAGENORMAL
+                    else:
+                        self.grille.grille[self.y][self.x].etat, self.grille.grille[self.y][
+                            self.x + 1].etat = Etat.VIDE, Etat.PERSONNAGEINVERSE
+                    self.x += 1
+            elif self.direction == -1:
+                if self.grille.grille[self.y][self.x - 1].etat == Etat.VIDE:
+                    if self.grille.grille[self.y][self.x-1].etat in self.pic:
+                        self.mort = True
+                    if self.traction:
+                        self.grille.grille[self.y][self.x].etat, self.grille.grille[self.y][
+                            self.x - 1].etat = Etat.VIDE, Etat.PERSONNAGENORMAL
+                    else:
+                        self.grille.grille[self.y][self.x].etat, self.grille.grille[self.y][
+                            self.x - 1].etat = Etat.VIDE, Etat.PERSONNAGEINVERSE
+                    self.x -= 1
+            if not self.traction:
+                if self.grille.grille[self.y - 1][self.x].etat in self.pic:
+                    self.mort = True
+                if self.grille.grille[self.y - 1][self.x].etat == Etat.VIDE:
+                    self.grille.grille[self.y][self.x].etat, self.grille.grille[self.y - 1][self.x].etat = \
+                        self.grille.grille[self.y - 1][self.x].etat, self.grille.grille[self.y][self.x].etat
+                    self.y -= 1
+
+            if self.traction:
+                if self.grille.grille[self.y + 1][self.x].etat in self.pic:
+                    self.mort = True
+                if self.grille.grille[self.y + 1][self.x].etat == Etat.VIDE:
+                    self.grille.grille[self.y][self.x].etat, self.grille.grille[self.y + 1][self.x].etat = \
+                        self.grille.grille[self.y + 1][self.x].etat, self.grille.grille[self.y][self.x].etat
+                    self.y += 1
+
+            self.direction = 0
 
     def change_gravite(self):
-        self.traction = not self.traction
+        if not self.traction and self.grille.grille[self.y - 1][self.x].etat != Etat.VIDE:
+            self.traction = not self.traction
+        elif self.traction and self.grille.grille[self.y + 1][self.x].etat != Etat.VIDE:
+            self.traction = not self.traction
 
     def recup(self):
         if not self.clef:
             self.clef = True
+    def __str__(self):
+        return f"Personnage: {self.x}, {self.y}"
 
-    def porte(self):
-        if test():
-            self.grille.grille[self.y][self.x].etat = Etat.VIDE
 
 
 if __name__ == '__main__':

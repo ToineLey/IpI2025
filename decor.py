@@ -8,15 +8,12 @@ class Grille:
         self.grille = []
 
     def remplir(self, niveau: int, tableau: int):
-        def open_txt(text):
-            txt = open(text, 'r')
-            return txt
-
-        obj = open_txt(f"niveau-{niveau}.txt").read()
-        self.grille = convertisseur.convert(obj)
-        for i in range(len(self.grille)):
-            self.grille[i] = self.grille[i][86 * (tableau - 1):86 * tableau]
-        convertisseur.uniformise(self.grille)
+        if not self.grille:
+            obj = open_txt(f"niveau-{niveau}.txt").read()
+            self.grille = convertisseur.convert(obj)
+            for i in range(len(self.grille)):
+                self.grille[i] = self.grille[i][86 * (tableau - 1):86 * tableau]
+            convertisseur.uniformise(self.grille)
 
     def __str__(self):
         ban = convertisseur.inverse_convert(self.grille)
