@@ -17,29 +17,30 @@ key=""
 
 
 def key_pressed(obj,l:Personnage):
-    while not P.mort or key!="m":
-        if obj=="d":
-            l.droite()
-            P.mouvement()
-            print("hey")
-        elif obj=="q":
-            l.gauche()
-            P.mouvement()
-        elif obj==" ":
-            l.change_gravite()
-            P.mouvement()
-        else:
-            pass
+    
+    if obj=="d":
+         l.droite()
+         P.mouvement()
+         print("hey")
+     elif obj=="q":
+         l.gauche()
+         P.mouvement()
+    elif obj==" ":
+         l.change_gravite()
+         P.mouvement()
+     else:
+        pass
 
 
-key_thread = threading.Thread(target=key_pressed, args=(key,P))
 
 
-def gameloop(key:str = ""):
+
+def gameloop():
     while not P.mort or key!="m":  # Boucle de jeu
         key = getch()  # Lire une touche avec la fonction modifiée
         os.system("clear")
         print(A)
+        key_pressed(key,P)
           # Traite l'entrée utilisateur
           # Appelle le mouvement du personnage en jeu
         sleep(0.06)  # Pause dans le temps
@@ -49,6 +50,4 @@ def gameloop(key:str = ""):
             print(recreer("mort"))
             break
 
-game_thread = threading.Thread(target=gameloop)
-key_thread.start()
-game_thread.start()
+gameloop()
