@@ -103,7 +103,7 @@ def inverse_convert(grille):
         Etat.PLEINHAUTDROITE: "┐",
         Etat.PLEINVERTICAL: "│",
         Etat.PLEINBASGAUCHE: "└",
-        Etat.PLEINBASDROITE: "┘",
+        Etat.PLEINBASDROIfrom case import Case, EtatTE: "┘",
         Etat.PARTIELHAUTGAUCHE: "╔",
         Etat.PARTIELHORIZONTAL: "═",
         Etat.PARTIELHAUTDROITE: "╗",
