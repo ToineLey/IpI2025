@@ -275,116 +275,100 @@ class Personnage:
     def __str__(self):
         return f"Personnage: {self.x}, {self.y}"
 
+def getch():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(sys.stdin.fileno())
+        ch = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return ch
+
+
+A = Grille()  # Crée la grille de jeu
+P = Personnage(A)  # Initialise le personnage de jeu
+
+A.remplir(0, 1)
+
+
+def interact():
+    # gestion des evenement clavier
+
+    # si une touche est appuyee
+
+    c = getch()
+    if c == '\x1b':  # x1b is ESC
+        P.mort = True
+    elif c == 'd':
+        P.droite()
+        P.mouvement()
+    elif c == 'q':
+        P.gauche()
+        P.mouvement()
+    elif c == ' ':
+        P.change_gravite()
+
+
+P.mouvement()
+
+
+pressed_keys = set()  # Utiliser un `set()` pour éviter les doublons et gérer les touches relâchées
+
+
 def key_listener():
     """ Thread qui écoute en continu les entrées clavier """
     global pressed_keys
+    tty.setcbreak(sys.stdin.fileno())  # Mode non bloquant
+    while True:
+        if select.select([sys.stdin], [], [], 0)[0]:  # Vérifier si une touche est pressée
+            key = sys.stdin.read(1)  # Lire une touche
+            if key == '\x1b':  # Échap pour quitter
+                pressed_keys.add('quit')
+                break
+            elif key in ('d', 'q', ' '):  # Déplacement et saut
+                pressed_keys.add(key)
 
-    # Configuration du mode non bloquant
-    fd = sys.stdin.fileno()
-    old_settings = termios.tcgetattr(fd)
-    tty.setraw(fd)
-
-    try:
-        while True:
-            if select.select([sys.stdin], [], [], 0)[0]:
-                key = sys.stdin.read(1)
-
-                # Quitter avec Échap
-                if key == '\x1b':
-                    pressed_keys.add('quit')
-                    break
-
-                # Gestion des touches directionnelles
-                elif key == 'd':
-                    pressed_keys.add('d')
-                    if 'q' in pressed_keys:  # Éviter les contraires simultanés
-                        pressed_keys.remove('q')
-                elif key == 'q':
-                    pressed_keys.add('q')
-                    if 'd' in pressed_keys:
-                        pressed_keys.remove('d')
-
-                # Touche espace pour changer la gravité
-                elif key == ' ':
-                    pressed_keys.add('space')
-
-                # Simuler le relâchement des touches (ceci est une limitation)
-                # En pratique, il faudrait une bibliothèque comme keyboard pour détecter le relâchement
-                elif key in ('r'):  # 'r' pour reset/relâcher toutes les touches
-                    pressed_keys.clear()
-
-            time.sleep(0.01)
-    finally:
-        # Restaurer les paramètres du terminal
-        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        time.sleep(0.01)  # Petite pause pour éviter la surcharge CPU
 
 
-# Remplacer la fonction gameloop par celle-ci
 def gameloop():
     global pressed_keys
     last_update = time.time()
-    frame_count = 0
 
-    # Variables d'état pour gérer le changement de gravité
-    gravite_cooldown = 0
-    last_space_press = False
-
-    while not P.mort and 'quit' not in pressed_keys:
-        frame_count += 1
+    while not P.mort:
         os.system("clear")  # Efface l'écran
-
-        # Affichage de l'état du jeu
         print(A)  # Affichage de la grille
         print(P)  # Affichage du personnage
-        print("Touches: ", pressed_keys)  # Debug
 
-        # Gestion des entrées
+        # Appliquer les mouvements en fonction des touches pressées
         if 'd' in pressed_keys:
             P.droite()
-        elif 'q' in pressed_keys:
+        if 'q' in pressed_keys:
             P.gauche()
-        else:
-            P.neutre()  # Ralentissement naturel
+        if ' ' in pressed_keys:
+            P.change_gravite()
 
-        # Gestion du changement de gravité (avec cooldown)
-        space_pressed = 'space' in pressed_keys
-        if space_pressed and not last_space_press and gravite_cooldown <= 0:
-            if P.change_gravite():  # Tente de changer la gravité
-                gravite_cooldown = 15  # ~0.5 secondes
-        last_space_press = space_pressed
+        P.mouvement()  # Met à jour le personnage
 
-        # Consommer l'événement espace pour éviter les répétitions
-        if 'space' in pressed_keys:
-            pressed_keys.remove('space')
+        # ✅ Réinitialiser uniquement les touches relâchées
+        pressed_keys.clear()  # On remet à zéro pour éviter le mouvement infini
 
-        # Décrémentation du cooldown
-        if gravite_cooldown > 0:
-            gravite_cooldown -= 1
-
-        # Mise à jour de la position
-        P.mouvement()
-
-        # Calcul du temps d'attente pour maintenir une fréquence constante
+        # Gestion du temps pour une fluidité optimale
         now = time.time()
         elapsed = now - last_update
-        frame_duration = 1 / 30  # 30 FPS
-
-        if elapsed < frame_duration:
-            time.sleep(frame_duration - elapsed)
-
+        if elapsed < 0.03:
+            time.sleep(0.03 - elapsed)
         last_update = time.time()
 
-    # Fin de partie
-    os.system("clear")
-    print(recreer("mort"))
+        # Vérifier si le joueur est mort ou si on veut quitter
+        if P.mort or 'quit' in pressed_keys:
+            os.system("clear")
+            print(recreer("mort"))
+            break
 
-
-# Initialisation du jeu reste identique
-A = Grille()
-P = Personnage(A)
-A.remplir(0, 1)
-
-# Lancer le jeu
+# Lancer l'écoute clavier en arrière-plan
 keyboard_thread = threading.Thread(target=key_listener, daemon=True)
 keyboard_thread.start()
+
 gameloop()
